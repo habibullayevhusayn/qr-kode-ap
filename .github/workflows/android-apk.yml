@@ -40,6 +40,9 @@ jobs:
           rm -rf android
           npx cap add android
 
+      - name: Ilova ikonkasini avtomatik yaratish
+        run: npx @capacitor/assets generate --android --assetPath assets
+
       - name: Add native gallery and reminder support
         run: node scripts/patch-android.mjs
 
@@ -47,10 +50,13 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug
 
+      - name: APK fayl nomini o'zgartirish
+        run: mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/QrKodIlova.apk
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: yoz-qr-android-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: QrKodIlova
+          path: android/app/build/outputs/apk/debug/QrKodIlova.apk
           if-no-files-found: error
           retention-days: 14
